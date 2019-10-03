@@ -1,7 +1,7 @@
 .card__panel-background {
   position: fixed;
   background-color: rgba(50, 60, 71, 0.259);
-  width: 95vw;
+  width: 100vw;
   height: 100vh;
   content: " ";
   top: 0;
@@ -13,7 +13,7 @@
   top: 0;
   right: 0;
   width: 447px;
-  height: 95%;
+  height: 100vh;
   background: #FFFFFF;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
   text-align: left;
@@ -46,6 +46,7 @@
     right: 15px;
     font-size: 2em;
     transform: rotate(45deg);
+    outline: none;
   }
 
   &-gipoteza {
@@ -68,6 +69,7 @@
                 border: 0px;
                 cursor: pointer;
                 height: auto;
+                outline: none;
             }
         }
     }
@@ -102,7 +104,7 @@
 
   &-steps {
     padding-bottom: 39px;
-    max-height: 60%;
+    max-height: 45%;
     overflow-y: auto;
   }
 
@@ -121,6 +123,7 @@
       color: #323C47;
       height: 33px;
       width: 80%;
+      outline: none;
    }
   }
 

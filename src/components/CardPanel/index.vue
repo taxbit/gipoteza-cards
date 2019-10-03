@@ -1,30 +1,45 @@
 <template>
-  <transition name="slide-fade">
-    <div class="card__panel" v-if="showPanel">
-      <button class="card__panel-close" @click="$emit('close')" >X</button>
-      <h1>Добавьте свою гипотезу</h1>
-      <label for="gipotezaDescription">Моя гипотеза</label>
-      <textarea v-model="gipoteza" cols="30" rows="1"></textarea>
+  <div>
+    <div class="card__panel-background" v-if="showPanel" @click="$emit('close')"></div>
 
-      <div class="card__panel-ddl">
-        <span>DDL</span>
-        <datepicker
-          :language="ru" 
-          :format="customFormatter">
-        </datepicker>
-      </div>
+    <transition name="slide-fade">
+      <div class="card__panel" v-if="showPanel">
+          <button class="card__panel-close" @click="$emit('close')" >+</button>
 
-      <div v-for="step in steps" :key="step.id">
-        <input type="checkbox" v-model="step.cheked">
-        <input type="text" v-model="step.descr" 
-        @keyup.once="addStep(step.id)">
+          <div class="card__panel-gipoteza">
+            <h2>Добавьте свою гипотезу</h2>
+            <h4>Моя гипотеза</h4>
+            <input type="text" v-model="gipoteza" placeholder="Если я..., то смогу...">
+          </div>
+
+          <div v-if="card.date" class="card__panel-ddl">
+            <span>DDL</span>
+            <datepicker
+              :language="ru"
+              :format="customFormatter"
+              v-model="ddl">
+            </datepicker>
+          </div>
+
+
+          <div class="card__panel-steps">
+            <h2>Добавьте действия для гипотезы</h2>
+            <transition-group name="steps" tag="div" class="card__panel-steps">
+              <div v-for="step in steps" :key="step.id" class="card__panel-step">
+                <input type="checkbox" v-model="step.cheked">
+                <input type="text" v-model="step.descr"
+                @keyup.once="addStep(step.id)">
+              </div>
+            </transition-group>
+          </div>
+
+          <button class="card__panel-save" @click="saveCard()" :disabled="!gipoteza">
+            Создать гипотезу
+          </button>
+
       </div>
-      {{steps}}
-      <button class="card__save" @click="saveCard()">
-        Создать гипотезу
-      </button>
-    </div>
-  </transition>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -42,24 +57,25 @@
       return {
         gipoteza: '',
         steps: [],
-        stepsCount: 1,
+        ddl: null,
         ru: ru,
       }
     },
     watch: {
       card() {
         this.gipoteza = this.card.gipoteza
-        this.steps = JSON.parse(JSON.stringify(this.card.steps)) 
+        this.steps = JSON.parse(JSON.stringify(this.card.steps))
+        this.ddl = new Date(this.card.date)
       }
     },
     methods: {
       saveCard() {
-        this.$emit('saveCard', { 
-          id: this.card.id, 
-          gipoteza: this.gipoteza,
-          steps: this.steps
+        this.$emit('saveCard', {
+            'id': this.card.id,
+            'gipoteza': this.gipoteza,
+            'steps': this.steps,
+            'ddl': this.ddl,
           })
-        //this.gipoteza = ''
       },
       addStep(id) {
         this.steps.push({
@@ -77,42 +93,3 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
-.card__panel {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 447px;
-  height: 100%;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
-  &-close {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-  }
-
-  &-ddl {
-    span {
-      color: #323C47;
-    }
-  }
-}
-.slide-fade {
-  &-enter-active {
-    transition: all .3s ease;
-  }
-  &-leave-active {
-    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-  }
-  &-enter, &-leave-to
-  {
-    transform: translateX(10px);
-    opacity: 0;
-  }
-}
-</style>

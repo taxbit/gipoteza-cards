@@ -1,0 +1,11 @@
+.home {
+    font-family: Roboto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    justify-items: center;
+    margin: 0px auto;
+    width: 1349px;
+    height: 730px;
+    justify-content: space-between;
+  }

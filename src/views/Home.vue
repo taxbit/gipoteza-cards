@@ -4,7 +4,6 @@
       :card='card'
       @click.native="showCardPanel(card)"
     />
-    {{showPanel}}
     <CardPanel
       :showPanel="showPanel"
       :card="cardInPanel"
@@ -16,6 +15,8 @@
 
 <script>
 import { Card, CardPanel } from '@/components'
+import moment from 'moment'
+import 'roboto-fontface/css/roboto/roboto-fontface.css'
 
 export default {
   name: 'home',
@@ -37,8 +38,9 @@ export default {
     for (let i = 0; i < this.cardCount; i++) {
       this.cards.push({
         'id':i,
-        'date': `${i} ${this.month}`,
-        'status':null, 
+        'date': this.getDate(i),
+        'ddl' : this.getDate(i),
+        'status':null,
         'gipoteza':null,
         'steps':[{
             'id': 0,
@@ -60,25 +62,22 @@ export default {
       this.showPanel = false
 
       //тут будет запрос к API на сохранение кары по cardUpdated.id
-      let tempCard = this.cards.find(card => card.id===upData.id)
-      tempCard.gipoteza = upData.gipoteza
-      tempCard.steps = upData.steps
+      this.cards.forEach(card => {
+        if (card.id===upData.id) {
+          card.gipoteza = upData.gipoteza
+          card.steps = upData.steps
+          card.ddl = upData.ddl
+          card.status = moment(upData.ddl) < moment() ? 'Просрочена' : 'Ожидает теста'
+        }
+      })
 
+    },
+    getDate(add) {
+      moment.locale('ru')
+      return moment().startOf('month').add(add, 'days');
     }
+
   },
 }
 </script>
 
-<style lang="scss" scoped>
-  .home {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;
-    justify-items: center;
-    margin: 0px auto;
-    width: 1349px;
-    height: 730px;
-    justify-content: space-between;
-    position: relative;
-  }
-</style>

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Card v-for="card in cards" :key="card.id"
-      :card='card'
+      :card="card"
       @click.native="showCardPanel(card)"
     />
     <CardPanel
@@ -28,7 +28,6 @@ export default {
     return {
       cardCount: 16,
       cards: [],
-      month: 'июня',
       showPanel: false,
       cardInPanel: null,
     }

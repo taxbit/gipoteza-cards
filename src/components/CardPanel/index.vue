@@ -65,7 +65,7 @@
       card() {
         this.gipoteza = this.card.gipoteza
         this.steps = JSON.parse(JSON.stringify(this.card.steps))
-        this.ddl = new Date(this.card.date)
+        this.ddl = new Date(this.card.ddl || this.card.date)
       }
     },
     methods: {

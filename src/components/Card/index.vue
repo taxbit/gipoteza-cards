@@ -4,7 +4,7 @@
     <div class="card__date">{{customFormatter(card.date)}}</div>
 
     <div v-if="card.status" class="card__status"
-      :class="{card__status_out:timeout}">
+      :class="{card__status_out : timeout}">
       {{card.status}}
     </div>
 

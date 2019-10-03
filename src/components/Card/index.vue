@@ -1,17 +1,26 @@
 <template>
   <div class="card">
-    <div class="card__date">{{number}} {{month}}</div>
-    <div class="card__status">test</div>
+    <div class="card__date">{{card.date}}</div>
+    <div v-if="card.status" class="card__status">{{card.status}}</div>
+    
+    <div v-if="card.gipoteza==null">
+      <div class="card__add-icon">+</div>
+      <div class="card__helper">
+        Добавить гипотезу с дедлайном в этот день
+      </div>
+    </div>
 
-    <div class="card__add-icon">+</div>
-    <div class="card__helper">Добавить гипотезу с дедлайном в этот день</div>
+    <div v-else>
+      {{card.gipoteza}}
+    </div>
+  {{card.steps[0]}}
   </div>
 </template>
 
 <script>
   export default {
     name: 'Card',
-    props: ['number', 'month'],
+    props: ['card'],
     data() {
       return {
 
